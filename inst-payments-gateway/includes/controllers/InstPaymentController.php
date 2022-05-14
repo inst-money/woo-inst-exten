@@ -36,7 +36,7 @@ class InstPaymentController {
 
         // todo 哪里获取商品信息？
         $product_info = array(
-            'name' => 'test'
+            'name' => 'name'
         );
 
         $shipping_info = array(
@@ -57,7 +57,7 @@ class InstPaymentController {
             'cust_order_id' => 'Woo_' . $key . '_' . $orderId,
             'customer' => $customer,
             'product_info' => $product_info,
-            'shipping_info' => $shipping_info,
+           // 'shipping_info' => $shipping_info,
         ));
 
         $result = $sdk->api_v1_payment($post_data, $url, $key, $secret, $passphrase);
@@ -114,7 +114,8 @@ class InstPaymentController {
             $dataArray = json_decode($tmpData, true);
 
             if (strcmp($dataArray['action'], 'order_result') == 0) {
-                foreach ($dataArray['events'] as $value) {
+                foreach ($dataArray['events'] as $val) {
+                    $value = json_decode($val, true);
                     $order_id = substr($value['params']['cust_order_id'], 37);
                     $order = wc_get_order($order_id);
                     if (empty($order)) {
