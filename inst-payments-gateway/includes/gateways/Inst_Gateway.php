@@ -91,10 +91,10 @@ class Inst_Gateway extends WC_Payment_Gateway {
                 'type'        => 'text',
             ),
             'api_webhook' => array (
-                'title'       => 'API Webhook',
+                'title'       => 'Webhook',
                 'label'       => 'Enable Inst Payment Webhook',
                 'type'        => 'checkbox',
-                'description' => 'url : http(s)://{host}?route=extension/payment/instpay/callback',
+                'description' => 'url : http(s)://{host}?wc-api=inst_webhook',
                 'default'     => 'no',
             ),
         );
