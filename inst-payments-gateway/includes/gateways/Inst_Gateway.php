@@ -44,6 +44,7 @@ class Inst_Gateway extends WC_Payment_Gateway {
 
         // 这个action hook保存设置
         add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+        add_action( 'woocommerce_receipt_' . $this->id, [$this, 'receipt_page']);
 
         $this->controller = new InstPaymentController;
     }
@@ -115,6 +116,18 @@ class Inst_Gateway extends WC_Payment_Gateway {
         return $this->controller->payment($this);
     }
 
+    public function receipt_page($order_id)
+    {
+        $inst_url = get_post_meta($order_id, 'inst_url', true);
+
+        ?>
+
+        <iframe
+            src='<?= $inst_url; ?>' height='795' width=100% frameBorder='0' id="new_iframe">
+        </iframe>
+
+        <?php
+    }
 
 //    /**
 //     * 自定义信用卡表格

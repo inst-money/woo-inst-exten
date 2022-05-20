@@ -9,7 +9,7 @@ class InstPaymentController {
      */
     public function payment($gateway) {
         $orderId = (int)WC()->session->get('inst_order');
-        echo $orderId . "\n";
+//        echo $orderId . "\n";
 
         $order = wc_get_order($orderId);
         if (empty($order)) {
@@ -61,7 +61,7 @@ class InstPaymentController {
         ));
 
         $result = $sdk->api_v1_payment($post_data, $url, $key, $secret, $passphrase);
-        echo $result . "\n";
+//        echo $result . "\n";
 
         $result = json_decode($result, true);
         if ( $result['code'] === 0 ) {
@@ -72,11 +72,13 @@ class InstPaymentController {
             // 空购物车
             WC()->cart->empty_cart();
 
-            echo $result['result']['redirect_url'] . "\n";
+//            echo $result['result']['redirect_url'] . "\n";
             // 重定向
+            update_post_meta($orderId, 'inst_url', $result['result']['redirect_url']);
             return array(
                 'result' => 'success',
-                'redirect' => $result['result']['redirect_url'],
+                'redirect' => $order->get_checkout_payment_url(true),
+                'payment_url' => $result['result']['redirect_url'],
             );
         } else if ($result['code'] === 117008) {
             wc_add_notice('Transaction already exist. Please check in order-view page.', 'error' );
