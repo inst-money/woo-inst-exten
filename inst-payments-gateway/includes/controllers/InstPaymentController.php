@@ -34,30 +34,30 @@ class InstPaymentController {
             'zipcode' => $order->get_billing_postcode(),
         );
 
-        // todo 哪里获取商品信息？
-        $product_info = array(
-            'name' => 'name'
-        );
-
-        $shipping_info = array(
-            'phone' => $order->get_shipping_phone(),
-            'first_name' => $order->get_shipping_first_name(),
-            'last_name' => $order->get_shipping_last_name(),
-            'country' => $order->get_shipping_country(),
-            'state' => $order->get_shipping_state(),
-            'city' => $order->get_shipping_city(),
-            'address' => $order->get_shipping_address_1() . $order->get_shipping_address_2(),
-            'zipcode' => $order->get_shipping_postcode(),
-            'company' => $order->get_shipping_company(),
-        );
+//        // todo 哪里获取商品信息？
+//        $product_info = array(
+//            'name' => 'name'
+//        );
+//
+//        $shipping_info = array(
+//            'phone' => $order->get_shipping_phone(),
+//            'first_name' => $order->get_shipping_first_name(),
+//            'last_name' => $order->get_shipping_last_name(),
+//            'country' => $order->get_shipping_country(),
+//            'state' => $order->get_shipping_state(),
+//            'city' => $order->get_shipping_city(),
+//            'address' => $order->get_shipping_address_1() . $order->get_shipping_address_2(),
+//            'zipcode' => $order->get_shipping_postcode(),
+//            'company' => $order->get_shipping_company(),
+//        );
 
         $post_data = $sdk->formatArray(array(
             'currency' => $order->get_currency(),
             'amount' => $order->get_total(),
             'cust_order_id' => 'Woo_' . $key . '_' . $orderId,
             'customer' => $customer,
-            'product_info' => $product_info,
-           // 'shipping_info' => $shipping_info,
+//            'product_info' => $product_info,
+//            'shipping_info' => $shipping_info,
         ));
 
         $result = $sdk->api_v1_payment($post_data, $url, $key, $secret, $passphrase);
