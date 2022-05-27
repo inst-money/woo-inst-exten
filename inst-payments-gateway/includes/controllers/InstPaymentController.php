@@ -58,7 +58,7 @@ class InstPaymentController {
             'customer' => $customer,
 //            'product_info' => $product_info,
 //            'shipping_info' => $shipping_info,
-            'return_url' => $order->get_view_order_url(),
+//            'return_url' => $order->get_view_order_url(),
         ));
 
         $result = $sdk->api_v1_payment($post_data, $url, $key, $secret, $passphrase);
