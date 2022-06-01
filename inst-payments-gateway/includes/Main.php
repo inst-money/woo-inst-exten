@@ -3,11 +3,15 @@
 namespace Inst;
 
 use Inst\Gateways\Inst_Gateway;
+use Inst\Gateways\Inst_Mastercard_Gateway;
+use Inst\Gateways\Inst_Visa_Gateway;
 use InstPaymentController;
 
 class Main
 {
     const ROUTE_WEBHOOK = 'inst_webhook';
+    const ROUTE_MASTERCARD_WEBHOOK = 'inst_mastercard_webhook';
+    const ROUTE_VISA_WEBHOOK = 'inst_visa_webhook';
 
     public static $instance;
     public static function getInstance()
@@ -27,6 +31,8 @@ class Main
     {
         add_filter('woocommerce_payment_gateways', [$this, 'addPaymentGateways']);
         add_action('woocommerce_api_' . self::ROUTE_WEBHOOK, [new InstPaymentController, 'webhook']);
+        add_action('woocommerce_api_' . self::ROUTE_MASTERCARD_WEBHOOK, [new InstPaymentController, 'webhook_master']);
+        add_action('woocommerce_api_' . self::ROUTE_VISA_WEBHOOK, [new InstPaymentController, 'webhook_visa']);
     }
 
     /**
@@ -35,6 +41,8 @@ class Main
     public function addPaymentGateways($gateways)
     {
         $gateways[] = Inst_Gateway::class;
+        $gateways[] = Inst_Mastercard_Gateway::class;
+        $gateways[] = Inst_Visa_Gateway::class;
         return $gateways;
     }
 }

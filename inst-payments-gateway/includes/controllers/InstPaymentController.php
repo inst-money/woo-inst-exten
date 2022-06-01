@@ -1,6 +1,8 @@
 <?php
 
 use Inst\Gateways\Inst_Gateway;
+use Inst\Gateways\Inst_Mastercard_Gateway;
+use Inst\Gateways\Inst_Visa_Gateway;
 
 class InstPaymentController {
 
@@ -51,15 +53,24 @@ class InstPaymentController {
 //            'company' => $order->get_shipping_company(),
 //        );
 
-        $post_data = $sdk->formatArray(array(
+        $post_data = array(
             'currency' => $order->get_currency(),
             'amount' => $order->get_total(),
-            'cust_order_id' => 'Woo_' . $key . '_' . $orderId,
+            'cust_order_id' => 'Woo_' . substr($key, 0 ,5) . '_' . date("YmdHis",time()) . "_" . $orderId,
             'customer' => $customer,
 //            'product_info' => $product_info,
 //            'shipping_info' => $shipping_info,
 //            'return_url' => $order->get_view_order_url(),
-        ));
+        );
+
+        $network = (int)WC()->session->get('inst_network'); // todo 加锁？
+        if ($network == 1) {
+            $post_data['network'] = 'Mastercard';
+        } elseif ($network == 2) {
+            $post_data['network'] = 'Visa';
+        }
+
+        $post_data = $sdk->formatArray($post_data);
 
         $result = $sdk->api_v1_payment($post_data, $url, $key, $secret, $passphrase);
 //        echo $result . "\n";
@@ -109,6 +120,49 @@ class InstPaymentController {
             die;
         }
 
+        $this->webhook_internal();
+    }
+
+    public function webhook_master() { // todo 起一个service去做
+
+        http_response_code(200);
+        header('Content-Type: application/json');
+
+        $gateway = new Inst_Mastercard_Gateway;
+        $enabled = $gateway->api_webhook;
+        if ($enabled === 'no') {
+            echo json_encode([
+                'code' => 1,
+                'msg'  => 'REFUSE',
+            ]);
+            die;
+        }
+
+        $this->webhook_internal();
+    }
+
+    public function webhook_visa() { // todo 起一个service去做
+
+        http_response_code(200);
+        header('Content-Type: application/json');
+
+        $gateway = new Inst_Visa_Gateway;
+        $enabled = $gateway->api_webhook;
+        if ($enabled === 'no') {
+            echo json_encode([
+                'code' => 1,
+                'msg'  => 'REFUSE',
+            ]);
+            die;
+        }
+
+        $this->webhook_internal();
+    }
+
+    private function webhook_internal() {
+        http_response_code(200);
+        header('Content-Type: application/json');
+
         // todo 验签
         $result = true;
 
@@ -119,7 +173,7 @@ class InstPaymentController {
             if (strcmp($dataArray['action'], 'order_result') == 0) {
                 foreach ($dataArray['events'] as $val) {
                     $value = json_decode($val, true);
-                    $order_id = substr($value['params']['cust_order_id'], 37);
+                    $order_id = substr($value['params']['cust_order_id'], 25);
                     $order = wc_get_order($order_id);
                     if (empty($order)) {
                         continue;

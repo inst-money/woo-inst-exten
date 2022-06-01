@@ -10,14 +10,14 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Inst_Gateway extends WC_Payment_Gateway {
+class Inst_Visa_Gateway extends WC_Payment_Gateway {
 
     public function __construct() {
-        $this->id = 'instpay'; // 支付网关插件ID
+        $this->id = 'instpay_visa'; // 支付网关插件ID
         $this->icon = ''; // todo 将显示在结帐页面上您的网关名称附近的图标的URL
         $this->has_fields = true; // todo 如果需要自定义信用卡形式
-        $this->method_title = 'Inst Payments Gateway';
-        $this->method_description = 'Take Credit/Debit Card payments on your store.'; // 将显示在选项页面上
+        $this->method_title = 'Inst Visa Payments Gateway';
+        $this->method_description = 'Take Visa Card payments on your store.'; // 将显示在选项页面上
 
         // 网关可以支持订阅，退款，保存付款方式，
         // 这里仅支持支付功能
@@ -54,7 +54,7 @@ class Inst_Gateway extends WC_Payment_Gateway {
         $this->form_fields = array(
             'enabled' => array(
                 'title'       => 'Enable/Disable',
-                'label'       => 'Enable Inst Payment Gateway',
+                'label'       => 'Enable Inst Visa Payment Gateway',
                 'type'        => 'checkbox',
                 'description' => '',
                 'default'     => 'no'
@@ -63,14 +63,14 @@ class Inst_Gateway extends WC_Payment_Gateway {
                 'title'       => 'Title',
                 'type'        => 'text',
                 'description' => 'This controls the title which the user sees during checkout.',
-                'default'     => 'Credit/Debit Card',
+                'default'     => 'Visa Card',
 //                'desc_tip'    => true,
             ),
             'description' => array(
                 'title'       => 'Description',
                 'type'        => 'textarea',
                 'description' => 'This controls the description which the user sees during checkout.',
-                'default'     => 'Pay with your credit card via our super-cool payment gateway.',
+                'default'     => 'Pay with your visa card via our super-cool payment gateway.',
             ),
             'domain' => array (
                 'title'       => 'Domain',
@@ -91,9 +91,9 @@ class Inst_Gateway extends WC_Payment_Gateway {
             ),
             'api_webhook' => array (
                 'title'       => 'Webhook',
-                'label'       => 'Enable Inst Payment Webhook',
+                'label'       => 'Enable Inst Visa Payment Webhook',
                 'type'        => 'checkbox',
-                'description' => 'url : http(s)://{host}?wc-api=inst_webhook',
+                'description' => 'url : http(s)://{host}?wc-api=inst_visa_webhook',
                 'default'     => 'no',
             ),
         );
@@ -111,7 +111,7 @@ class Inst_Gateway extends WC_Payment_Gateway {
      */
     public function process_payment( $order_id ) {
         WC()->session->set('inst_order', $order_id);
-        WC()->session->set('inst_network', 0);
+        WC()->session->set('inst_network', 2);
         return $this->controller->payment($this);
     }
 
