@@ -85,13 +85,23 @@ class InstPaymentController {
             WC()->cart->empty_cart();
 
 //            echo $result['result']['redirect_url'] . "\n";
-            // 重定向
-            update_post_meta($orderId, 'inst_url', $result['result']['redirect_url']);
-            return array(
-                'result' => 'success',
-                'redirect' => $order->get_checkout_payment_url(true),
-                'payment_url' => $result['result']['redirect_url'],
-            );
+            // 重定向，根据配置决定跳转到receipt_page(iframe)还是inst支付页面
+//            echo 'iframe?:' . $gateway->iframe . "\n";
+            if ($gateway->iframe === 'yes') {
+//                echo 'iframe:' . $result['result']['redirect_url'] . "\n";
+                update_post_meta($orderId, 'inst_url', $result['result']['redirect_url']);
+                return array(
+                    'result' => 'success',
+                    'redirect' => $order->get_checkout_payment_url(true),
+                    'payment_url' => $result['result']['redirect_url'],
+                );
+            } else {
+//                echo 'redirect:' . $result['result']['redirect_url'] . "\n";
+                return array(
+                    'result' => 'success',
+                    'redirect' => $result['result']['redirect_url'],
+                );
+            }
         } else if ($result['code'] === 117008) {
             wc_add_notice('Transaction already exist. Please check in order-view page.', 'error' );
             return array(

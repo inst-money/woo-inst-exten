@@ -39,6 +39,7 @@ class Inst_Gateway extends WC_Payment_Gateway {
         $this->api_secret = $this->get_option( 'api_secret' );
         $this->api_password = $this->get_option( 'api_password' );
         $this->api_webhook = $this->get_option( 'api_webhook' );
+        $this->iframe = $this->get_option( 'iframe' );
 
         // 这个action hook保存设置
         add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -94,6 +95,13 @@ class Inst_Gateway extends WC_Payment_Gateway {
                 'label'       => 'Enable Inst Payment Webhook',
                 'type'        => 'checkbox',
                 'description' => 'url : http(s)://{host}?wc-api=inst_webhook',
+                'default'     => 'no',
+            ),
+            'iframe' => array (
+                'title'       => 'Iframe',
+                'label'       => 'Enable Inst Payment Iframe',
+                'type'        => 'checkbox',
+                'description' => 'If use iframe, inst_pay page will be displayed as an iframe on the receipt_page of woo, otherwise it will jump directly to the inst_pay page.',
                 'default'     => 'no',
             ),
         );
