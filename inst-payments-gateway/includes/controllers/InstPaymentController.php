@@ -189,10 +189,19 @@ class InstPaymentController {
                         continue;
                     }
 
-                    if ($value['params']['status'] == 1) {
+                    $status = $value['params']['status'];
+                    $this->log->write('Inst order:' . $order_id . ', inst status:' . $status);
+                    if ($status == 1) { // 成功
                         $order->payment_complete();
-                        $order->add_order_note( 'Payment is completed.', true);
-                    } // todo 其他订单状态可自行添加
+                        $order->add_order_note( 'Payment is completed. (Inst Webhook)', true);
+                    } elseif ($status == 4) { // 失败
+                        $order->update_status('failed', 'Failed. (Inst Webhook)');
+                    } elseif ($status == 5) { // 取消
+                        $order->update_status('cancelled', 'Cancelled. (Inst Webhook)');
+                    } elseif ($status == 6) { // 过期
+                        $order->update_status('failed', 'Expired. (Inst Webhook)');
+                    }
+                    // todo 其他订单状态可自行添加
                 }
             } // todo 是否需要接收其他推送action？
             echo json_encode([

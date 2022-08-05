@@ -56,7 +56,7 @@ class InstPaymentsSDK {
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         $responseText = curl_exec($curl);
         if (!$responseText) {
-            $this->log->write('INSTPAY NOTIFY CURL_ERROR: ' . var_export(curl_error($curl), true));
+            echo('CURL_ERROR: ' . var_export(curl_error($curl)));
         }
         curl_close($curl);
 
