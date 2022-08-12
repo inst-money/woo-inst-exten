@@ -190,7 +190,6 @@ class InstPaymentController {
                     }
 
                     $status = $value['params']['status'];
-                    $this->log->write('Inst order:' . $order_id . ', inst status:' . $status);
                     if ($status == 1) { // 成功
                         $order->payment_complete();
                         $order->add_order_note( 'Payment is completed. (Inst Webhook)', true);
