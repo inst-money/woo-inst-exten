@@ -5,7 +5,7 @@
  * Description: Take Credit/Debit Card payments on your store.
  * Author: Inst payment
  * Author URI: https://www.inst.money/
- * Version: 1.0.0
+ * Version: 2.0.0
  */
 
 if (!defined('ABSPATH')) {

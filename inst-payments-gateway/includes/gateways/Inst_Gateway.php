@@ -119,8 +119,7 @@ class Inst_Gateway extends WC_Payment_Gateway {
      */
     public function process_payment( $order_id ) {
         WC()->session->set('inst_order', $order_id);
-        WC()->session->set('inst_network', 0);
-        return $this->controller->payment($this);
+        return $this->controller->payment($this, '');
     }
 
     public function receipt_page($order_id)

@@ -1,5 +1,6 @@
 <?php
 
+use Inst\Gateways\Inst_Crypto_Gateway;
 use Inst\Gateways\Inst_Gateway;
 use Inst\Gateways\Inst_Mastercard_Gateway;
 use Inst\Gateways\Inst_Visa_Gateway;
@@ -9,7 +10,7 @@ class InstPaymentController {
     /**
      * @throws Exception
      */
-    public function payment($gateway) {
+    public function payment($gateway, $payType) {
         $orderId = (int)WC()->session->get('inst_order');
 //        echo $orderId . "\n";
 
@@ -61,14 +62,8 @@ class InstPaymentController {
 //            'product_info' => $product_info,
 //            'shipping_info' => $shipping_info,
 //            'return_url' => $order->get_view_order_url(),
+            'network' => $payType,
         );
-
-        $network = (int)WC()->session->get('inst_network'); // todo 加锁？
-        if ($network == 1) {
-            $post_data['network'] = 'Mastercard';
-        } elseif ($network == 2) {
-            $post_data['network'] = 'Visa';
-        }
 
         $post_data = $sdk->formatArray($post_data);
 
@@ -157,6 +152,24 @@ class InstPaymentController {
         header('Content-Type: application/json');
 
         $gateway = new Inst_Visa_Gateway;
+        $enabled = $gateway->api_webhook;
+        if ($enabled === 'no') {
+            echo json_encode([
+                'code' => 1,
+                'msg'  => 'REFUSE',
+            ]);
+            die;
+        }
+
+        $this->webhook_internal();
+    }
+
+    public function webhook_crypto() { // todo 起一个service去做
+
+        http_response_code(200);
+        header('Content-Type: application/json');
+
+        $gateway = new Inst_Crypto_Gateway;
         $enabled = $gateway->api_webhook;
         if ($enabled === 'no') {
             echo json_encode([

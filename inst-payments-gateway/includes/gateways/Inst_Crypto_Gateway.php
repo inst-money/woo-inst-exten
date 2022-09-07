@@ -10,14 +10,14 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Inst_Mastercard_Gateway extends WC_Payment_Gateway {
+class Inst_Crypto_Gateway extends WC_Payment_Gateway {
 
     public function __construct() {
-        $this->id = 'instpay_mastercard'; // 支付网关插件ID
+        $this->id = 'instpay_crypto'; // 支付网关插件ID
         $this->icon = ''; // todo 将显示在结帐页面上您的网关名称附近的图标的URL
         $this->has_fields = true; // todo 如果需要自定义信用卡形式
-        $this->method_title = 'Inst Mastercard Payments Gateway';
-        $this->method_description = 'Take Mastercard payments on your store.'; // 将显示在选项页面上
+        $this->method_title = 'Inst Crypto Payments Gateway';
+        $this->method_description = 'Take Crypto payments on your store.'; // 将显示在选项页面上
 
         // 网关可以支持订阅，退款，保存付款方式，
         // 这里仅支持支付功能
@@ -55,7 +55,7 @@ class Inst_Mastercard_Gateway extends WC_Payment_Gateway {
         $this->form_fields = array(
             'enabled' => array(
                 'title'       => 'Enable/Disable',
-                'label'       => 'Enable Inst Mastercard Payment Gateway',
+                'label'       => 'Enable Inst Crypto Payment Gateway',
                 'type'        => 'checkbox',
                 'description' => '',
                 'default'     => 'no'
@@ -64,14 +64,14 @@ class Inst_Mastercard_Gateway extends WC_Payment_Gateway {
                 'title'       => 'Title',
                 'type'        => 'text',
                 'description' => 'This controls the title which the user sees during checkout.',
-                'default'     => 'Master Card',
+                'default'     => 'Crypto',
 //                'desc_tip'    => true,
             ),
             'description' => array(
                 'title'       => 'Description',
                 'type'        => 'textarea',
                 'description' => 'This controls the description which the user sees during checkout.',
-                'default'     => 'Pay with your mastercard via our super-cool payment gateway.',
+                'default'     => 'Pay with crypto coins via our super-cool payment gateway.',
             ),
             'domain' => array (
                 'title'       => 'Domain',
@@ -92,9 +92,9 @@ class Inst_Mastercard_Gateway extends WC_Payment_Gateway {
             ),
             'api_webhook' => array (
                 'title'       => 'Webhook',
-                'label'       => 'Enable Inst Mastercard Payment Webhook',
+                'label'       => 'Enable Inst Crypto Payment Webhook',
                 'type'        => 'checkbox',
-                'description' => 'url : http(s)://{host}?wc-api=inst_mastercard_webhook',
+                'description' => 'url : http(s)://{host}?wc-api=inst_crypto_webhook',
                 'default'     => 'no',
             ),
             'iframe' => array (
@@ -119,7 +119,7 @@ class Inst_Mastercard_Gateway extends WC_Payment_Gateway {
      */
     public function process_payment( $order_id ) {
         WC()->session->set('inst_order', $order_id);
-        return $this->controller->payment($this, 'Mastercard');
+        return $this->controller->payment($this, 'Crypto');
     }
 
     public function receipt_page($order_id)
