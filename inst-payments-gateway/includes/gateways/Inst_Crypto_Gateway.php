@@ -64,14 +64,14 @@ class Inst_Crypto_Gateway extends WC_Payment_Gateway {
                 'title'       => 'Title',
                 'type'        => 'text',
                 'description' => 'This controls the title which the user sees during checkout.',
-                'default'     => 'Crypto',
+                'default'     => 'Pay with Crypto',
 //                'desc_tip'    => true,
             ),
             'description' => array(
                 'title'       => 'Description',
                 'type'        => 'textarea',
                 'description' => 'This controls the description which the user sees during checkout.',
-                'default'     => 'Pay with crypto coins via our super-cool payment gateway.',
+                'default'     => 'You can enjoy a smooth payment process using crypto including BTC, ETH and USDT.',
             ),
             'domain' => array (
                 'title'       => 'Domain',

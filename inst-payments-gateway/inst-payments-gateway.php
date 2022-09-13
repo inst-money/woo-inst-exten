@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WooCommerce Inst Payment Gateway
  * Plugin URI: https://www.inst.money/
- * Description: Take Credit/Debit Card payments on your store.
+ * Description: Take Credit/Debit Card or Crypto payments on your store.
  * Author: Inst payment
  * Author URI: https://www.inst.money/
  * Version: 2.0.0

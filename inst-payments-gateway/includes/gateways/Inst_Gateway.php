@@ -17,7 +17,7 @@ class Inst_Gateway extends WC_Payment_Gateway {
         $this->icon = ''; // todo 将显示在结帐页面上您的网关名称附近的图标的URL
         $this->has_fields = true; // todo 如果需要自定义信用卡形式
         $this->method_title = 'Inst Payments Gateway';
-        $this->method_description = 'Take Credit/Debit Card payments on your store.'; // 将显示在选项页面上
+        $this->method_description = 'Take Credit/Debit Card or Crypto payments on your store.'; // 将显示在选项页面上
 
         // 网关可以支持订阅，退款，保存付款方式，
         // 这里仅支持支付功能
