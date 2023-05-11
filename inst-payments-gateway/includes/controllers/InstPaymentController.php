@@ -57,7 +57,7 @@ class InstPaymentController {
         $post_data = array(
             'currency' => $order->get_currency(),
             'amount' => $order->get_total(),
-            'cust_order_id' => 'Woo_' . substr($key, 0 ,5) . '_' . date("YmdHis",time()) . "_" . $orderId,
+            'cust_order_id' => 'woo' . substr($key, 0 ,5) . date("YmdHis",time()) . $orderId,
             'customer' => $customer,
 //            'product_info' => $product_info,
 //            'shipping_info' => $shipping_info,
