@@ -196,7 +196,7 @@ class InstPaymentController {
             if (strcmp($dataArray['action'], 'order_result') == 0) {
                 foreach ($dataArray['events'] as $val) {
                     $value = json_decode($val, true);
-                    $order_id = substr($value['params']['cust_order_id'], 25);
+                    $order_id = substr($value['params']['cust_order_id'], 22);
                     $order = wc_get_order($order_id);
                     if (empty($order)) {
                         continue;
